@@ -1,4 +1,4 @@
-function cube_plot(origin,X,Y,Z,color)
+function cube_plot(origin,sz,color)
 % CUBE_PLOT plots a cube with dimension of X, Y, Z.
 %
 % INPUTS:
@@ -39,7 +39,8 @@ fac = [1 2 3 4;
     1 2 8 7;
     6 7 1 4;
     2 3 5 8];
-cube = [ver(:,1)*X+origin(1),ver(:,2)*Y+origin(2),ver(:,3)*Z+origin(3)];
+cube = ver(:,:)*sz + growVertically(origin, size(ver,1));
 patch('Faces',fac,'Vertices',cube,'FaceColor',color);
+drawnow
 end
 % ------------------------------Code Ends Here-------------------------------- %
