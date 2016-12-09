@@ -1,7 +1,11 @@
-# Voxelization
+# matlabVoxelization
 
-## Original model
-![original model](/images/original.png)
+Matlab code for voxelizing 3D models 
 
-## Voxelized model
+**Original model**
+
+![original model](/images/original.png) 
+
+**Voxelized model**
+
 ![voxelized model](/images/voxelized.png)
