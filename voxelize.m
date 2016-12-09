@@ -42,7 +42,10 @@ function split(VR, FC, fci, p1, p2)
       for j = 1:length(fci)
         tr = VR(FC(fci(j),:), :);
         if isIntersecting(tr, q1, q2)
-          fci1 = [fci1 fci(j)];  
+          fci1 = [fci1 fci(j)];
+          if size == 2
+            break;  
+          end
         end
       end
       
@@ -54,6 +57,11 @@ function split(VR, FC, fci, p1, p2)
 end
 
 function [b] = isIntersecting(tr, p1, p2)
+  if hasPointInsideBox(tr, p1, p2)
+    b = true;
+    return;
+  end
+
 % https://fileadmin.cs.lth.se/cs/Personal/Tomas_Akenine-Moller/pubs/tribox.pdf
 % http://fileadmin.cs.lth.se/cs/Personal/Tomas_Akenine-Moller/code/
   pm = (p1 + p2) / 2;
@@ -111,4 +119,16 @@ function [b] = isIntersectingPlane(tr, p1, p2)
      end
   end
   b = (abs(r) ~= 7);
+end
+
+function [b] = hasPointInsideBox(tr, p1, p2)
+% Checks if at least one point of the trangle is inside AABB
+  p1 = growVertically(p1, 3);
+  p2 = growVertically(p2, 3);
+  
+  isCoordinateBetween = ((tr >= p1) + (tr < p2)) > 1;
+  isPointBetween = sum(isCoordinateBetween, 2) > 2;
+  hasPointInside = sum(isPointBetween) > 0;
+  
+  b = hasPointInside;
 end
