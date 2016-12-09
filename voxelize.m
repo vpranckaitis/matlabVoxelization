@@ -24,7 +24,7 @@ function voxelize(filename, scale)
   linkprop(h, 'view');
   
   tic
-  split(VR, FC, 1:size(FC,1), [0,0,0], ones(1,3)*k);
+  split(VR, FC, 1:size(FC,1), [0,0,0], [k k k]);
   toc
   
   pause;
