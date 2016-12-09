@@ -49,7 +49,7 @@ function split(VR, FC, FCi, p1, p2)
 end
 
 function [b] = isIntersecting(tr, p1, p2)
-  eps = 1e-1;
+  eps = 1e-2;
   
   % move objects so box's center would match origin
   pm = (p1 + p2) / 2;
