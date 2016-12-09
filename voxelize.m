@@ -49,6 +49,14 @@ function split(VR, FC, FCi, p1, p2)
 end
 
 function [b] = isIntersecting(tr, p1, p2)
+  eps = 1e-1;
+  
+  % move objects so box's center would match origin
+  pm = (p1 + p2) / 2;
+  p1 = p1 - pm + eps;
+  p2 = p2 - pm - eps;
+  tr = tr - growVertically(pm, 3);
+  
   if hasPointInsideBox(tr, p1, p2)
     b = true;
     return;
@@ -57,12 +65,7 @@ function [b] = isIntersecting(tr, p1, p2)
 % https://fileadmin.cs.lth.se/cs/Personal/Tomas_Akenine-Moller/pubs/tribox.pdf
 % http://fileadmin.cs.lth.se/cs/Personal/Tomas_Akenine-Moller/code/
 
-  % move objects so box's center would match origin
-  pm = (p1 + p2) / 2;
   halfSize = (p2(1) - p1(1)) / 2;
-  p1 = p1 - pm;
-  p2 = p2 - pm;
-  tr = tr - growVertically(pm, 3);
   
   b = false;
   
@@ -83,15 +86,15 @@ function [b] = isIntersecting(tr, p1, p2)
     for j = 1:3
       e = zeros(1, 3);
       e(i) = 1;
-      f = tr(mod(i, 3)+1,:) - tr(i,:);
+      f = tr(mod(j, 3)+1,:) - tr(j,:);
       a = cross(e, f);
       
       p = zeros(1, 3);
-      r = 0;
       for k = 1:3
         p(k) = dot(a, tr(k,:));
-        r = r + halfSize * abs(a(k));
       end
+      
+      r = sum(halfSize * abs(a));
       
       if (min(p) > r) || (max(p) < -r)
         return;
@@ -132,7 +135,7 @@ function [b] = hasPointInsideBox(tr, p1, p2)
   p1 = growVertically(p1, 3);
   p2 = growVertically(p2, 3);
   
-  isCoordinateBetween = ((tr >= p1) + (tr < p2)) > 1;
+  isCoordinateBetween = ((tr > p1) + (tr < p2)) > 1;
   isPointBetween = sum(isCoordinateBetween, 2) > 2;
   hasPointInside = sum(isPointBetween) > 0;
   
