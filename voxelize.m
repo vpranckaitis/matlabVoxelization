@@ -126,7 +126,7 @@ function [b] = isBoxIntersectingPlane(tr, p1, p2)
      end
   end
   
-  b = (abs(r) ~= 7);
+  b = (abs(r) ~= 8);
 end
 
 function [b] = hasPointInsideBox(tr, p1, p2)
@@ -147,6 +147,8 @@ function [q1, q2] = getOctant(p1, p2, i)
 % Binary representation of 'i' means which half of the threen coordinates
 % x, y and z to take. For example, binary(6)=110 means to take first half
 % for coordinate x, but second half for coordinates y and z.
+
+% https://en.wikipedia.org/wiki/Octant_(solid_geometry)
 
   halfsize = (p2(1) - p1(1)) / 2;
   q1 = double(bitget(int8(i), 1:3)) * halfsize + p1;
