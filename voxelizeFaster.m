@@ -140,11 +140,7 @@ function [b] = hasPointInsideBox(tr, p1, p2)
   p1 = growVertically(p1, 3);
   p2 = growVertically(p2, 3);
   
-  isCoordinateBetween = ((tr > p1) + (tr < p2)) > 1;
-  isPointBetween = sum(isCoordinateBetween, 2) > 2;
-  hasPointInside = sum(isPointBetween) > 0;
-  
-  b = hasPointInside;
+  b = sum(sum((tr > p1) + (tr < p2), 2) > 5) > 0;
 end
 
 function [q1, q2] = getOctant(p1, p2, i) 
