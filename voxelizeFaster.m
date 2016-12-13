@@ -49,16 +49,6 @@ function split(VR, FC, FCi, p1, p2)
 end
 
 function [b] = isIntersecting(tr, p1, p2)
-  eps = 1e-2;
-  
-  % move objects so box's center would match origin
-  pm = (p1 + p2) / 2;
-  p1 = p1 - pm + eps;
-  p2 = p2 - pm - eps;
-  tr(:,1) = tr(:,1) - pm(1);
-  tr(:,2) = tr(:,2) - pm(2);
-  tr(:,3) = tr(:,3) - pm(3);
-  
   if hasPointInsideBox(tr, p1, p2)
     b = true;
     return;
@@ -175,12 +165,21 @@ function [q1, q2, FCi1] = getFacesIntersectingOctant(VR, FC, FCi, p1, p2, i)
 
   [q1, q2] = getOctant(p1, p2, i);
   
+  % move objects so box's center would match origin
+  eps = 1e-2;
+  qm = (q1 + q2) / 2;
+  qt1 = q1 - qm + eps;
+  qt2 = q2 - qm - eps;
+  
   FCi1 = zeros(length(FCi),1); % indexes of faces intersecting current octant
   n = 0;
   for j = 1:length(FCi)
     tr = VR(FC(FCi(j),:), :);
-
-    if isIntersecting(tr, q1, q2)
+    tr(:,1) = tr(:,1) - qm(1);
+    tr(:,2) = tr(:,2) - qm(2);
+    tr(:,3) = tr(:,3) - qm(3);
+    
+    if isIntersecting(tr, qt1, qt2)
       n = n + 1;
       FCi1(n) = FCi(j);
 
