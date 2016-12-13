@@ -93,7 +93,7 @@ function [b] = isIntersecting(tr, p1, p2)
       
       p = zeros(1, 3);
       for k = 1:3
-        p(k) = dot(a, tr(k,:));
+        p(k) = dot3(a, tr(k,:));
       end
       
       r = sum(halfSize * abs(a));
@@ -123,7 +123,7 @@ function [b] = isBoxIntersectingPlane(tr, p1, p2)
      bits = double(bitget(int8(i), 1:3));
      v = bits.*p1 + (1 - bits).*p2;  % vertex of the box
      v = v - q; % vector from point 'q' to the vertex 'v'
-     if dot(n, v) > 0 % if projection is positive 
+     if dot3(n, v) > 0 % if projection is positive 
        r = r + 1;  
      end
      if r > 0 && r < i + 1
@@ -139,6 +139,10 @@ function [n] = cross3(a, b)
   n(1) = a(2)*b(3)-a(3)*b(2);
   n(2) = a(3)*b(1)-a(1)*b(3);
   n(3) = a(1)*b(2)-a(2)*b(1);
+end
+
+function [s] = dot3(a, b)
+  s = a(1)*b(1) + a(2)*b(2) + a(3)*b(3);
 end
 
 function [b] = hasPointInsideBox(tr, p1, p2)
