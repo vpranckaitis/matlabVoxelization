@@ -27,7 +27,7 @@ function voxelizeFaster(filename, scale)
   split(VR, FC, 1:size(FC,1), [0,0,0], [k k k]);
   toc
   
-  pause;
+%   pause;
 end
 
 function split(VR, FC, FCi, p1, p2)
@@ -72,10 +72,10 @@ function [b] = isIntersecting(tr, p1, p2)
   b = false;
   
   % test 1: bounding boxes of triangle and AABB
-  for i = 1:3
-    if (min(tr(:,i)) > halfSize) || (max(tr(:,i)) < -halfSize)
-      return;
-    end
+  if (min(tr(:,1)) > halfSize) || (max(tr(:,1)) < -halfSize) || ...
+     (min(tr(:,2)) > halfSize) || (max(tr(:,2)) < -halfSize) || ...
+     (min(tr(:,3)) > halfSize) || (max(tr(:,3)) < -halfSize)
+    return;
   end
   
   % test 2: intersection of triangle's plane and AABB
