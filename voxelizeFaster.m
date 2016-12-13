@@ -124,9 +124,12 @@ function [b] = isBoxIntersectingPlane(tr, p1, p2)
      if dot(n, v) > 0 % if projection is positive 
        r = r + 1;  
      end
+     if r > 0 && r < i + 1
+       break;
+     end
   end
   
-  b = (abs(r) ~= 8);
+  b = (r ~= 8);
 end
 
 function [b] = hasPointInsideBox(tr, p1, p2)
