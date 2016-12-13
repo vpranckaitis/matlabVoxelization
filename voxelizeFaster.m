@@ -89,7 +89,7 @@ function [b] = isIntersecting(tr, p1, p2)
       e = zeros(1, 3);
       e(i) = 1;
       f = tr(mod(j, 3)+1,:) - tr(j,:);
-      a = cross(e, f);
+      a = cross3(e, f);
       
       p = zeros(1, 3);
       for k = 1:3
@@ -116,7 +116,7 @@ function [b] = isBoxIntersectingPlane(tr, p1, p2)
   q = tr(1,:);
   f1 = tr(2,:) - q;
   f2 = tr(3,:) - q;
-  n = cross(f1, f2);
+  n = cross3(f1, f2);
   
   r = 0;
   for i=0:7
@@ -132,6 +132,13 @@ function [b] = isBoxIntersectingPlane(tr, p1, p2)
   end
   
   b = (r ~= 8);
+end
+
+function [n] = cross3(a, b)
+  n = zeros(size(a));
+  n(1) = a(2)*b(3)-a(3)*b(2);
+  n(2) = a(3)*b(1)-a(1)*b(3);
+  n(3) = a(1)*b(2)-a(2)*b(1);
 end
 
 function [b] = hasPointInsideBox(tr, p1, p2)
