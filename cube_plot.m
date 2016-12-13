@@ -41,6 +41,5 @@ fac = [1 2 3 4;
     2 3 5 8];
 cube = ver(:,:)*sz + growVertically(origin, size(ver,1));
 patch('Faces',fac,'Vertices',cube,'FaceColor',color);
-drawnow
 end
 % ------------------------------Code Ends Here-------------------------------- %

@@ -37,6 +37,7 @@ function split(VR, FC, FCi, p1, p2)
   
   if size == 1 % 1 is a minimum size for voxel
     cube_plot(p1, 1, 'r');
+    drawnow;
   else 
     for i = 0:7    
       [q1, q2, FCi1] = getFacesIntersectingOctant(VR, FC, FCi, p1, p2, i);
