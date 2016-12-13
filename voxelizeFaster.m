@@ -55,7 +55,9 @@ function [b] = isIntersecting(tr, p1, p2)
   pm = (p1 + p2) / 2;
   p1 = p1 - pm + eps;
   p2 = p2 - pm - eps;
-  tr = tr - growVertically(pm, 3);
+  tr(:,1) = tr(:,1) - pm(1);
+  tr(:,2) = tr(:,2) - pm(2);
+  tr(:,3) = tr(:,3) - pm(3);
   
   if hasPointInsideBox(tr, p1, p2)
     b = true;
