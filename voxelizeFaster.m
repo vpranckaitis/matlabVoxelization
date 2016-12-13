@@ -74,25 +74,77 @@ function [b] = isIntersecting(tr, p1, p2)
   end
   
   % test 3: 9 other tests
-  for i = 1:3
-    for j = 1:3
-      e = zeros(1, 3);
-      e(i) = 1;
-      f = tr(mod(j, 3)+1,:) - tr(j,:);
-      a = cross3(e, f);
-      
-      p = zeros(1, 3);
-      for k = 1:3
-        p(k) = dot3(a, tr(k,:));
-      end
-      
-      r = sum(halfSize * abs(a));
-      
-      if (min(p) > r) || (max(p) < -r)
-        return;
-      end
-    end
-  end
+  p = zeros(3, 1);
+  
+  f0 = tr(2,:)-tr(1,:);
+  f1 = tr(3,:)-tr(2,:);
+  f2 = tr(1,:)-tr(3,:);
+  
+  %% a = (0,-fz,fy)
+  f = f0;
+  p(1) = -f(3)*tr(1,2) + f(2)*tr(1,3);
+  p(2) = -f(3)*tr(2,2) + f(2)*tr(2,3);
+  p(3) = -f(3)*tr(3,2) + f(2)*tr(3,3);
+  r = halfSize * (abs(f(3)) + abs(f(2)));
+  if min(p) > r || max(p) < -r, return; end
+  
+  f = f1;
+  p(1) = -f(3)*tr(1,2) + f(2)*tr(1,3);
+  p(2) = -f(3)*tr(2,2) + f(2)*tr(2,3);
+  p(3) = -f(3)*tr(3,2) + f(2)*tr(3,3);
+  r = halfSize * (abs(f(3)) + abs(f(2)));
+  if min(p) > r || max(p) < -r, return; end
+  
+  f = f2;
+  p(1) = -f(3)*tr(1,2) + f(2)*tr(1,3);
+  p(2) = -f(3)*tr(2,2) + f(2)*tr(2,3);
+  p(3) = -f(3)*tr(3,2) + f(2)*tr(3,3);
+  r = halfSize * (abs(f(3)) + abs(f(2)));
+  if min(p) > r || max(p) < -r, return; end
+  
+  %% a = (fz, 0, -fx)
+  f = f0;
+  p(1) = f(3)*tr(1,1) - f(1)*tr(1,3);
+  p(2) = f(3)*tr(2,1) - f(1)*tr(2,3);
+  p(3) = f(3)*tr(3,1) - f(1)*tr(3,3);
+  r = halfSize * (abs(f(3)) + abs(f(1)));
+  if min(p) > r || max(p) < -r, return; end
+  
+  f = f1;
+  p(1) = f(3)*tr(1,1) - f(1)*tr(1,3);
+  p(2) = f(3)*tr(2,1) - f(1)*tr(2,3);
+  p(3) = f(3)*tr(3,1) - f(1)*tr(3,3);
+  r = halfSize * (abs(f(3)) + abs(f(1)));
+  if min(p) > r || max(p) < -r, return; end
+  
+  f = f2;
+  p(1) = f(3)*tr(1,1) - f(1)*tr(1,3);
+  p(2) = f(3)*tr(2,1) - f(1)*tr(2,3);
+  p(3) = f(3)*tr(3,1) - f(1)*tr(3,3);
+  r = halfSize * (abs(f(3)) + abs(f(1)));
+  if min(p) > r || max(p) < -r, return; end
+  
+  %% a = (-fy, fx, 0)
+  f = f0;
+  p(1) = -f(2)*tr(1,1) + f(1)*tr(1,2);
+  p(2) = -f(2)*tr(2,1) + f(1)*tr(2,2);
+  p(3) = -f(2)*tr(3,1) + f(1)*tr(3,2);
+  r = halfSize * (abs(f(2)) + abs(f(1)));
+  if min(p) > r || max(p) < -r, return; end
+  
+  f = f1;
+  p(1) = -f(2)*tr(1,1) + f(1)*tr(1,2);
+  p(2) = -f(2)*tr(2,1) + f(1)*tr(2,2);
+  p(3) = -f(2)*tr(3,1) + f(1)*tr(3,2);
+  r = halfSize * (abs(f(2)) + abs(f(1)));
+  if min(p) > r || max(p) < -r, return; end
+  
+  f = f2;
+  p(1) = -f(2)*tr(1,1) + f(1)*tr(1,2);
+  p(2) = -f(2)*tr(2,1) + f(1)*tr(2,2);
+  p(3) = -f(2)*tr(3,1) + f(1)*tr(3,2);
+  r = halfSize * (abs(f(2)) + abs(f(1)));
+  if min(p) > r || max(p) < -r, return; end
   
   b = true; % all tests passed
 end
