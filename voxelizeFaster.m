@@ -62,11 +62,12 @@ function [b] = isIntersecting(tr, p1, p2)
   b = false;
   
   % test 1: bounding boxes of triangle and AABB
-  if (min(tr(:,1)) > halfSize) || (max(tr(:,1)) < -halfSize) || ...
-     (min(tr(:,2)) > halfSize) || (max(tr(:,2)) < -halfSize) || ...
-     (min(tr(:,3)) > halfSize) || (max(tr(:,3)) < -halfSize)
-    return;
-  end
+  [mn, mx] = minmax3(tr(:,1));
+  if (mn > halfSize) || (mx < -halfSize), return; end
+  [mn, mx] = minmax3(tr(:,2));
+  if (mn > halfSize) || (mx < -halfSize), return; end
+  [mn, mx] = minmax3(tr(:,3));
+  if (mn > halfSize) || (mx < -halfSize), return; end
   
   % test 2: intersection of triangle's plane and AABB
   if ~isBoxIntersectingPlane(tr, p1, p2)
@@ -200,6 +201,14 @@ function [mn, mx] = minmax2(a, b)
   else
     mn = b; mx = a;
   end
+end
+
+function [mn, mx] = minmax3(a)
+  mn = a(1); mx = a(1);
+  if a(2) < mn, mn = a(2); end
+  if a(2) > mx, mx = a(2); end
+  if a(3) < mn, mn = a(3); end
+  if a(3) > mx, mx = a(3); end
 end
 
 function [b] = hasPointInsideBox(tr, p1, p2)
