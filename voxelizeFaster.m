@@ -197,8 +197,8 @@ end
 function [b] = hasPointInsideBox(tr, p1, p2)
 % Checks if at least one point of the trangle is inside AABB
 
-  p1 = growVertically(p1, 3);
-  p2 = growVertically(p2, 3);
+  p1 = [p1; p1; p1];
+  p2 = [p2; p2; p2];
   
   b = sum(sum((tr > p1) + (tr < p2), 2) > 5) > 0;
 end
