@@ -75,76 +75,75 @@ function [b] = isIntersecting(tr, p1, p2)
   
   % test 3: 9 other tests
   p = zeros(3, 1);
+
+  f = tr(2,:)-tr(1,:);
+  ff = abs(f);
+  p(1) = -f(3)*tr(1,2) + f(2)*tr(1,3);
+%   p(2) = -f(3)*tr(2,2) + f(2)*tr(2,3);
+  p(3) = -f(3)*tr(3,2) + f(2)*tr(3,3);
+  [mn, mx] = minmax2(p(1), p(3));
+  r = halfSize * (ff(3) + ff(2));
+  if mn > r || mx < -r, return; end
   
-  f0 = tr(2,:)-tr(1,:);
-  f1 = tr(3,:)-tr(2,:);
-  f2 = tr(1,:)-tr(3,:);
+  p(1) = f(3)*tr(1,1) - f(1)*tr(1,3);
+%   p(2) = f(3)*tr(2,1) - f(1)*tr(2,3);
+  p(3) = f(3)*tr(3,1) - f(1)*tr(3,3);
+  [mn, mx] = minmax2(p(1), p(3));
+  r = halfSize * (ff(3) + ff(1));
+  if mn > r || mx < -r, return; end
   
-  %% a = (0,-fz,fy)
-  f = f0;
+  p(1) = -f(2)*tr(1,1) + f(1)*tr(1,2);
+%   p(2) = -f(2)*tr(2,1) + f(1)*tr(2,2);
+  p(3) = -f(2)*tr(3,1) + f(1)*tr(3,2);
+  [mn, mx] = minmax2(p(1), p(3));
+  r = halfSize * (ff(2) + ff(1));
+  if mn > r || mx < -r, return; end
+  
+  f = tr(3,:)-tr(2,:);
+  ff = abs(f);
   p(1) = -f(3)*tr(1,2) + f(2)*tr(1,3);
   p(2) = -f(3)*tr(2,2) + f(2)*tr(2,3);
-  p(3) = -f(3)*tr(3,2) + f(2)*tr(3,3);
-  r = halfSize * (abs(f(3)) + abs(f(2)));
-  if min(p) > r || max(p) < -r, return; end
+%   p(3) = -f(3)*tr(3,2) + f(2)*tr(3,3);
+  [mn, mx] = minmax2(p(1), p(2));
+  r = halfSize * (ff(3) + ff(2));
+  if mn > r || mx < -r, return; end
+
+  p(1) = f(3)*tr(1,1) - f(1)*tr(1,3);
+  p(2) = f(3)*tr(2,1) - f(1)*tr(2,3);
+%   p(3) = f(3)*tr(3,1) - f(1)*tr(3,3);
+  [mn, mx] = minmax2(p(1), p(2));
+  r = halfSize * (ff(3) + ff(1));
+  if mn > r || mx < -r, return; end
   
-  f = f1;
-  p(1) = -f(3)*tr(1,2) + f(2)*tr(1,3);
+  p(1) = -f(2)*tr(1,1) + f(1)*tr(1,2);
+  p(2) = -f(2)*tr(2,1) + f(1)*tr(2,2);
+%   p(3) = -f(2)*tr(3,1) + f(1)*tr(3,2);
+  [mn, mx] = minmax2(p(1), p(2));
+  r = halfSize * (ff(2) + ff(1));
+  if mn > r || mx < -r, return; end
+  
+  f = tr(1,:)-tr(3,:);
+  ff = abs(f);
+%   p(1) = -f(3)*tr(1,2) + f(2)*tr(1,3);
   p(2) = -f(3)*tr(2,2) + f(2)*tr(2,3);
   p(3) = -f(3)*tr(3,2) + f(2)*tr(3,3);
-  r = halfSize * (abs(f(3)) + abs(f(2)));
-  if min(p) > r || max(p) < -r, return; end
+  [mn, mx] = minmax2(p(2), p(3));
+  r = halfSize * (ff(3) + ff(2));
+  if mn > r || mx < -r, return; end
   
-  f = f2;
-  p(1) = -f(3)*tr(1,2) + f(2)*tr(1,3);
-  p(2) = -f(3)*tr(2,2) + f(2)*tr(2,3);
-  p(3) = -f(3)*tr(3,2) + f(2)*tr(3,3);
-  r = halfSize * (abs(f(3)) + abs(f(2)));
-  if min(p) > r || max(p) < -r, return; end
-  
-  %% a = (fz, 0, -fx)
-  f = f0;
-  p(1) = f(3)*tr(1,1) - f(1)*tr(1,3);
+%   p(1) = f(3)*tr(1,1) - f(1)*tr(1,3);
   p(2) = f(3)*tr(2,1) - f(1)*tr(2,3);
   p(3) = f(3)*tr(3,1) - f(1)*tr(3,3);
-  r = halfSize * (abs(f(3)) + abs(f(1)));
-  if min(p) > r || max(p) < -r, return; end
+  [mn, mx] = minmax2(p(2), p(3));
+  r = halfSize * (ff(3) + ff(1));
+  if mn > r || mx < -r, return; end
   
-  f = f1;
-  p(1) = f(3)*tr(1,1) - f(1)*tr(1,3);
-  p(2) = f(3)*tr(2,1) - f(1)*tr(2,3);
-  p(3) = f(3)*tr(3,1) - f(1)*tr(3,3);
-  r = halfSize * (abs(f(3)) + abs(f(1)));
-  if min(p) > r || max(p) < -r, return; end
-  
-  f = f2;
-  p(1) = f(3)*tr(1,1) - f(1)*tr(1,3);
-  p(2) = f(3)*tr(2,1) - f(1)*tr(2,3);
-  p(3) = f(3)*tr(3,1) - f(1)*tr(3,3);
-  r = halfSize * (abs(f(3)) + abs(f(1)));
-  if min(p) > r || max(p) < -r, return; end
-  
-  %% a = (-fy, fx, 0)
-  f = f0;
-  p(1) = -f(2)*tr(1,1) + f(1)*tr(1,2);
+%   p(1) = -f(2)*tr(1,1) + f(1)*tr(1,2);
   p(2) = -f(2)*tr(2,1) + f(1)*tr(2,2);
   p(3) = -f(2)*tr(3,1) + f(1)*tr(3,2);
-  r = halfSize * (abs(f(2)) + abs(f(1)));
-  if min(p) > r || max(p) < -r, return; end
-  
-  f = f1;
-  p(1) = -f(2)*tr(1,1) + f(1)*tr(1,2);
-  p(2) = -f(2)*tr(2,1) + f(1)*tr(2,2);
-  p(3) = -f(2)*tr(3,1) + f(1)*tr(3,2);
-  r = halfSize * (abs(f(2)) + abs(f(1)));
-  if min(p) > r || max(p) < -r, return; end
-  
-  f = f2;
-  p(1) = -f(2)*tr(1,1) + f(1)*tr(1,2);
-  p(2) = -f(2)*tr(2,1) + f(1)*tr(2,2);
-  p(3) = -f(2)*tr(3,1) + f(1)*tr(3,2);
-  r = halfSize * (abs(f(2)) + abs(f(1)));
-  if min(p) > r || max(p) < -r, return; end
+  [mn, mx] = minmax2(p(2), p(3));
+  r = halfSize * (ff(2) + ff(1));
+  if mn > r || mx < -r, return; end
   
   b = true; % all tests passed
 end
@@ -185,6 +184,14 @@ end
 
 function [s] = dot3(a, b)
   s = a(1)*b(1) + a(2)*b(2) + a(3)*b(3);
+end
+
+function [mn, mx] = minmax2(a, b) 
+  if a < b
+    mn = a; mx = b;
+  else
+    mn = b; mx = a;
+  end
 end
 
 function [b] = hasPointInsideBox(tr, p1, p2)
