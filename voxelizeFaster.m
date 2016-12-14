@@ -38,7 +38,7 @@ function split(VR, FC, FCi, p1, p2)
   if size == 1 % 1 is a minimum size for voxel
     cube_plot(p1, 1, 'r');
   else 
-    for i = 0:7    
+    for i = 1:8    
       [q1, q2, FCi1] = getFacesIntersectingOctant(VR, FC, FCi, p1, p2, i);
       
       if ~isempty(FCi1) % if octant has intersecting faces
@@ -159,15 +159,23 @@ function [b] = isBoxIntersectingPlane(tr, p1, p2)
   f2 = tr(3,:) - q;
   n = cross3(f1, f2);
   
+  z = [0 0 0;
+       0 0 1;
+       0 1 0;
+       0 1 1;
+       1 0 0;
+       1 0 1;
+       1 1 0;
+       1 1 1];
+  
   r = 0;
-  for i=0:7
-     bits = double(bitget(int8(i), 1:3));
-     v = bits.*p1 + (1 - bits).*p2;  % vertex of the box
-     v = v - q; % vector from point 'q' to the vertex 'v'
+  for i=1:8
+     bits = z(i,:);
+     v = bits.*p1 + (1 - bits).*p2 - q;  % vertex of the box
      if dot3(n, v) > 0 % if projection is positive 
        r = r + 1;  
      end
-     if r > 0 && r < i + 1
+     if r > 0 && r < i
        break;
      end
   end
@@ -211,8 +219,16 @@ function [q1, q2] = getOctant(p1, p2, i)
 
 % https://en.wikipedia.org/wiki/Octant_(solid_geometry)
 
+  z = [0 0 0;
+       0 0 1;
+       0 1 0;
+       0 1 1;
+       1 0 0;
+       1 0 1;
+       1 1 0;
+       1 1 1];
   halfsize = (p2(1) - p1(1)) / 2;
-  q1 = double(bitget(int8(i), 1:3)) * halfsize + p1;
+  q1 = z(i,:) * halfsize + p1;
   q2 = q1 + halfsize;
 end
 
